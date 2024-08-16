@@ -6,7 +6,7 @@ data class SearchResult(
 )
 
 data class Product(
-    val title: String,
+    val title: String?,
 )
 
 data class ProductDetails(

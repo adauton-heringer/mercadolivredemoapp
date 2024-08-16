@@ -12,7 +12,7 @@ data class SearchResultDto(
 )
 
 data class ProductDto(
-    @SerializedName("Title")
+    @SerializedName("title")
     val title: String,
 )
 

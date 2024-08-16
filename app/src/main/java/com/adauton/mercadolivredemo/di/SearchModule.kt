@@ -1,6 +1,9 @@
 package com.adauton.mercadolivredemo.di
 
 import com.adauton.mercadolivredemo.data.network.SearchApi
+import com.adauton.mercadolivredemo.data.repositories.SearchRepository
+import com.adauton.mercadolivredemo.data.repositories.SearchRepositoryImpl
+import com.adauton.mercadolivredemo.data.services.SearchService
 import com.adauton.mercadolivredemo.data.services.SearchServiceImpl
 import dagger.Module
 import dagger.Provides
@@ -14,7 +17,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object SearchModule {
 
-    private const val BASE_URL = "https://api.mercadolibre.com/sites/"
+    private const val BASE_URL = "https://api.mercadolibre.com/"
 
     @Singleton
     @Provides
@@ -30,5 +33,11 @@ object SearchModule {
 
     @Singleton
     @Provides
-    fun proviceSearchService(searchApi: SearchApi) = SearchServiceImpl(searchApi)
+    fun provideSearchService(searchApi: SearchApi): SearchService =
+        SearchServiceImpl(searchApi)
+
+    @Singleton
+    @Provides
+    fun provideSearchRepository(searchService: SearchService): SearchRepository =
+        SearchRepositoryImpl(searchService)
 }
