@@ -11,7 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.adauton.mercadolivredemo.features.productdetails.ProductDetailsScreen
+import com.adauton.mercadolivredemo.features.products.ProductsScreen
 import com.adauton.mercadolivredemo.features.search.SearchScreen
+import com.adauton.mercadolivredemo.navigation.MercadoLivreScreens
 import com.adauton.mercadolivredemo.ui.theme.MercadoLivreDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,10 +25,19 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent {
             MercadoLivreDemoTheme {
-                SearchScreen()
+                val navController = rememberNavController()
+
+                NavHost(
+                    navController = navController,
+                    startDestination = MercadoLivreScreens.Search.name
+                ) {
+                    composable(route = MercadoLivreScreens.Search.name) { SearchScreen(navController) }
+                    composable(route = MercadoLivreScreens.Products.name) { ProductsScreen(navController) }
+                    composable(route = MercadoLivreScreens.ProductDetails.name) { ProductDetailsScreen() }
+                }
             }
         }
     }

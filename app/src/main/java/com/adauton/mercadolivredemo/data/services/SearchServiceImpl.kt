@@ -11,11 +11,10 @@ import javax.inject.Inject
 
 class SearchServiceImpl @Inject constructor(private val searchApi: SearchApi) : SearchService {
 
-    override suspend fun search(query: String): SearchResult {
+    override suspend fun search(query: String, offset: Int): SearchResult {
 
-        val result = searchApi.searchProducts(query)
+        val result = searchApi.searchProducts(query, offset)
         if (result.isSuccessful) {
-            Log.d("DEBUGGIN", result.body().toString())
             return result.body()!!.toSearchResult()
         } else {
             throw HttpException(result)

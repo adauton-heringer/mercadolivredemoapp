@@ -76,6 +76,8 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.coil)
     testImplementation(libs.mockwebserver)
     testImplementation(libs.mockito)
     testImplementation(libs.mockito.kotlin)

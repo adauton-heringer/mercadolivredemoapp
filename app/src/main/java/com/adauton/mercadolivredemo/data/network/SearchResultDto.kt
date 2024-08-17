@@ -1,5 +1,6 @@
 package com.adauton.mercadolivredemo.data.network
 
+import android.util.Log
 import com.adauton.mercadolivredemo.models.Product
 import com.adauton.mercadolivredemo.models.SearchResult
 import com.google.gson.annotations.SerializedName
@@ -12,8 +13,14 @@ data class SearchResultDto(
 )
 
 data class ProductDto(
+    @SerializedName("id")
+    val id: String,
     @SerializedName("title")
     val title: String,
+    @SerializedName("thumbnail")
+    val image: String,
+    @SerializedName("price")
+    val price: Double,
 )
 
 fun SearchResultDto.toSearchResult(): SearchResult =
@@ -24,5 +31,9 @@ fun SearchResultDto.toSearchResult(): SearchResult =
 
 fun ProductDto.toProduct(): Product =
     Product(
+        id = id,
         title = title,
+        image = image,
+        price = "R$ %.2f".format(price).replace(".", ","),
     )
+

@@ -17,6 +17,7 @@ mockitoVersion = "5.12.0"
 mockitoKotlinVersion = "4.1.0"
 androidxHiltVersion = "1.2.0"
 navigationComposeVersion = "2.7.7"
+coilVersion = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +47,7 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVers
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxTestCoroutines" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltVersion"}
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationComposeVersion"}
+coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilVersion"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

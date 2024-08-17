@@ -38,6 +38,6 @@ object SearchModule {
 
     @Singleton
     @Provides
-    fun provideSearchRepository(searchService: SearchService): SearchRepository =
-        SearchRepositoryImpl(searchService)
+    fun provideSearchRepository(searchApi: SearchApi): SearchRepository =
+        SearchRepositoryImpl(searchApi)
 }

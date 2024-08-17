@@ -10,6 +10,7 @@ interface SearchApi {
     @GET("sites/MLB/search")
     suspend fun searchProducts(
         @Query("q") query: String,
+        @Query("offset") offset: Int = 0,
     ): Response<SearchResultDto>
 
     @GET("items/{productId}")
