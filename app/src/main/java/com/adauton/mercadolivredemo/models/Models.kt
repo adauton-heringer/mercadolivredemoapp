@@ -8,11 +8,14 @@ data class SearchResult(
 data class Product(
     val id: String,
     val title: String?,
-    val image: String?,
+    val imageUrl: String?,
     val price: String,
 )
 
 data class ProductDetails(
     val title: String,
     val id: String,
+    val price: String,
+    val imageUrl: String,
+    val description: String?,
 )

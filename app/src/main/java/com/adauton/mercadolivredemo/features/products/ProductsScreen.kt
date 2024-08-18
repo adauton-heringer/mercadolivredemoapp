@@ -10,8 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,6 +24,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -46,8 +48,7 @@ fun ProductsScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
-    val products by viewModel.products.collectAsState()
-    val query by viewModel.query.collectAsState()
+    val query = rememberSaveable { (uiState as? ProductsUiState.Success)?.result?.query ?: "" }
 
     Scaffold(
         topBar = {
@@ -55,9 +56,9 @@ fun ProductsScreen(
                 title = { Text(text = query, style = MaterialTheme.typography.bodyMedium) },
                 navigationIcon = {
                     if (navController.previousBackStackEntry != null) {
-                        IconButton(onClick = { navController.navigate(MercadoLivreScreens.Search.name) }) {
+                        IconButton(onClick = { navController.navigateUp() }) {
                             Icon(
-                                imageVector = Icons.Default.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Navigate back"
                             )
                         }
@@ -76,16 +77,18 @@ fun ProductsScreen(
     ) { paddingValues ->
         when (uiState) {
             ProductsUiState.Error -> {
-                ErrorScreen(message = "Sorry, a problem occurred. Try again later.")
+                ErrorScreen()
             }
+
             ProductsUiState.Loading -> {
                 LoadingScreen()
             }
+
             is ProductsUiState.Success -> {
                 SuccessView(
                     paddingValues = paddingValues,
                     navController = navController,
-                    products = products,
+                    products = (uiState as ProductsUiState.Success).result.products,
                     paginate = viewModel::getProducts,
                     onClick = viewModel::getProductDetails,
                 )
@@ -102,10 +105,11 @@ fun SuccessView(
     paginate: (Int) -> Unit,
     onClick: (String) -> Unit,
 ) {
+
     LazyColumn(
-        modifier = Modifier.padding(paddingValues)
-    ) {
-        itemsIndexed(products) { index, product ->
+        modifier = Modifier.padding(paddingValues),
+        ) {
+        itemsIndexed(items = products, key = { _, product -> product.id }) { index, product ->
             paginate(index)
             ProductView(
                 product = product,
@@ -132,13 +136,12 @@ fun ProductView(
     ) {
 
         AsyncImage(
-            model = product.image,
+            model = product.imageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.weight(1f),
             error = painterResource(id = R.drawable.ic_launcher_foreground),
-
-            )
+        )
 
         Column(
             modifier = Modifier
@@ -167,7 +170,7 @@ fun ProductPreview() {
         val product = Product(
             id = "",
             title = "This is a nice title",
-            image = "https://http2.mlstatic.com/D_956655-MLB71366790777_082023-O.jpg",
+            imageUrl = "https://http2.mlstatic.com/D_956655-MLB71366790777_082023-O.jpg",
             price = "R$ 10.58"
         )
         ProductView(

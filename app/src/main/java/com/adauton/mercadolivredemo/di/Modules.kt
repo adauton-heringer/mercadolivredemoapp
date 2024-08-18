@@ -1,13 +1,15 @@
 package com.adauton.mercadolivredemo.di
 
 import com.adauton.mercadolivredemo.data.network.SearchApi
+import com.adauton.mercadolivredemo.data.repositories.ProductDetailsRepository
+import com.adauton.mercadolivredemo.data.repositories.ProductDetailsRepositoryImpl
 import com.adauton.mercadolivredemo.data.repositories.SearchRepository
 import com.adauton.mercadolivredemo.data.repositories.SearchRepositoryImpl
-import com.adauton.mercadolivredemo.data.services.SearchService
-import com.adauton.mercadolivredemo.data.services.SearchServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,11 +35,12 @@ object SearchModule {
 
     @Singleton
     @Provides
-    fun provideSearchService(searchApi: SearchApi): SearchService =
-        SearchServiceImpl(searchApi)
-
-    @Singleton
-    @Provides
     fun provideSearchRepository(searchApi: SearchApi): SearchRepository =
         SearchRepositoryImpl(searchApi)
+
+
+    @Provides
+    @Singleton
+    fun provideProductDetailsRepository(searchApi: SearchApi): ProductDetailsRepository =
+        ProductDetailsRepositoryImpl(searchApi)
 }

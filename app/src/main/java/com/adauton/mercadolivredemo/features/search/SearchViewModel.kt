@@ -1,5 +1,6 @@
 package com.adauton.mercadolivredemo.features.search
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adauton.mercadolivredemo.data.repositories.SearchRepository
@@ -27,7 +28,7 @@ class SearchViewModel @Inject constructor(
 
     fun searchProducts(query: String) {
         viewModelScope.launch {
-            val result = searchRepository.searchProducts(query)
+            searchRepository.searchProducts(query)
         }
     }
 

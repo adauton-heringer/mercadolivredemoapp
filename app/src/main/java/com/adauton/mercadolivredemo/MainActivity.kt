@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable(route = MercadoLivreScreens.Search.name) { SearchScreen(navController) }
                     composable(route = MercadoLivreScreens.Products.name) { ProductsScreen(navController) }
-                    composable(route = MercadoLivreScreens.ProductDetails.name) { ProductDetailsScreen() }
+                    composable(route = MercadoLivreScreens.ProductDetails.name) { ProductDetailsScreen(navController) }
                 }
             }
         }

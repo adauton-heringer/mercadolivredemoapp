@@ -2,7 +2,8 @@ package com.adauton.mercadolivredemo.features.productdetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adauton.mercadolivredemo.data.repositories.SearchRepository
+import com.adauton.mercadolivredemo.common.Result
+import com.adauton.mercadolivredemo.data.repositories.ProductDetailsRepository
 import com.adauton.mercadolivredemo.models.ProductDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,17 +14,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
-    private val searchRepository: SearchRepository,
+    private val productDetailsRepository: ProductDetailsRepository,
 ) : ViewModel() {
 
-    private val _productDetails = MutableStateFlow(ProductDetails(title = "", id = ""))
-    val productDetails = _productDetails.asStateFlow()
+    private val _uiState =
+        MutableStateFlow<ProductDetailsUiState>(ProductDetailsUiState.Loading)
+    val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            searchRepository.productDetails.collect { productDetails ->
-                _productDetails.update { productDetails }
+            productDetailsRepository.productDetails.collect { productDetailsResult ->
+                when (productDetailsResult) {
+                    is Result.Error -> _uiState.update { ProductDetailsUiState.Error }
+                    is Result.Loading -> _uiState.update { ProductDetailsUiState.Loading }
+                    is Result.Success -> _uiState.update { ProductDetailsUiState.Success(productDetailsResult.data) }
+                }
             }
         }
     }
+}
+
+sealed interface ProductDetailsUiState {
+    data class Success(val result: ProductDetails) : ProductDetailsUiState
+    data object Error : ProductDetailsUiState
+    data object Loading : ProductDetailsUiState
 }

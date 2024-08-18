@@ -1,6 +1,5 @@
 package com.adauton.mercadolivredemo.data.network
 
-import android.util.Log
 import com.adauton.mercadolivredemo.models.Product
 import com.adauton.mercadolivredemo.models.SearchResult
 import com.google.gson.annotations.SerializedName
@@ -33,7 +32,7 @@ fun ProductDto.toProduct(): Product =
     Product(
         id = id,
         title = title,
-        image = image,
+        imageUrl = image,
         price = "R$ %.2f".format(price).replace(".", ","),
     )
 

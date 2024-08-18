@@ -14,7 +14,12 @@ interface SearchApi {
     ): Response<SearchResultDto>
 
     @GET("items/{productId}")
-    suspend fun getProduct(
+    suspend fun getProductDetails(
         @Path("productId") productId: String,
-    ): ProductDetailsDto
+    ): Response<ProductDetailsDto>
+
+    @GET("items/{productId}/description")
+    suspend fun getProductDescription(
+        @Path("productId") productId: String,
+    ): Response<ProductDescriptionDto>
 }
